@@ -1,0 +1,13 @@
+http_listener:
+  port: "![QALTuT+49+E=]"
+  host: "![4hUzB55NXH0=]"
+  base_path: "![Vxf6VG2CgMI=]"
+  path: "![WfC8Ikf4l5U=]"
+http_request:
+  port: "![lQchelXWi0A=]"
+  host: "![YakZzZ6XWGJGNs8uAfvzKg==]"
+  path: "![OJjGQT3mT/iNEEar8oeziA==]"
+ocr_service:
+  language: "![G5iVJ9NQ7Pk=]"
+  apikey: "![/sOnLUvPoM78yEOwX98jSw==]"
+  filetype: "![N4JLWU6Cz4s=]"

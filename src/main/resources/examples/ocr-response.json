@@ -1,0 +1,20 @@
+{
+    "IsErroredOnProcessing": false,
+    "OCRExitCode": 1,
+    "ParsedResults": [
+        {
+            "ErrorDetails": "",
+            "ErrorMessage": "",
+            "FileParseExitCode": 1,
+            "ParsedText": "foersom \r\nPDF Form Example \r\nThis is an example of a user fillable PDF form. Normally PDF is used as a final publishing format. \r\nHowever PDF has an option to be used as an entry form that can be edited and saved by the user. \r\nThe fields of this form have been selected to demonstrate as many as possible of the common \r\nentry fields. \r\nThis document and PDF form have been created with OpenOfice (version 3.4.0). \r\nTo fill out the form, make sure the PDF file is not read-only. Ifthe file is read-only save it first to a \r\nfolder or computer desktop. Close this file and open the saved file. \r\nPlease fill out the following fields. Important fields are marked yellow \r\nGiven Name: \r\nFamily Name: \r\nAddress I: \r\nAddress 2: \r\nPostcode: \r\nCountry: \r\nGender: \r\nHeight (cm): \r\nDriving License: \r\nHouse nr. \r\n2- sqz \r\nCity: I—Orså \r\nI speak and understand (tick all that apply): \r\nDeutsch English Franqais \r\nFavourite colour: \r\nÜ Esperanto \r\nLatin \r\nImportant: Save the completed PDF form (use menu File - Save). \r\n",
+            "TextOrientation": "0",
+            "TextOverlay": {
+                "HasOverlay": false,
+                "Lines": [],
+                "Message": "Text overlay is not provided as it is not requested"
+            }
+        }
+    ],
+    "ProcessingTimeInMilliseconds": "632",
+    "SearchablePDFURL": "Searchable PDF not generated as it was not requested."
+}

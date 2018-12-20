@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
+	<http:listener-config name="online-ocr-api-httpListenerConfig">
+		<http:listener-connection host="${http_listener.host}"
+			port="${http_listener.port}" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration"
+		doc:name="HTTP Request configuration" doc:id="860640c4-c721-45d9-9c70-d70b5b5251ba">
+		<http:request-connection host="${http_request.host}"
+			port="${http_request.port}">
+		</http:request-connection>
+	</http:request-config>
+	<api-gateway:autodiscovery apiId="15598609"
+		doc:name="API Autodiscovery" doc:id="49655158-a09e-43de-a0ea-a3c8a79818db"
+		flowRef="online-ocr-api-main" />
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="3b6a6fd6-e3e4-473f-81d1-7975e129d931" file="config.yaml" key="${config.key}" />
+	</mule>

@@ -1,0 +1,40 @@
+#%RAML 1.0
+version: v1
+title: Online OCR API
+
+traits:
+   client-id-required:
+    headers:
+      client_id:
+        type: string
+      client_secret:
+        type: string
+
+types:
+  OCRResult:  
+    properties: 
+      text:
+        type: string
+
+/translate: 
+  post: 
+    is: [ client-id-required ]
+    body:
+      multipart/form-data:
+        properties: 
+          file1: 
+            description: The file to translate to text 
+            required: true 
+            type: file 
+            fileTypes: [ 'image/jpeg']       
+    responses: 
+      200:
+        body: 
+          application/json:
+            type: OCRResult
+            description: The translated text
+            example: |
+              {
+                "text": "Application form XYZ"
+              }
+            
