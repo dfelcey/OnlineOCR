@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+	xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<munit:config name="implementation.raml-test-suite.xml" />
+	<secure-properties:config name="Secure_Properties_Config1" doc:name="Secure Properties Config" doc:id="d1ec8758-a41e-4b12-a581-5cd58fc20ff0" file="config.yaml" key="${config.key}" >
+		<secure-properties:encrypt algorithm="Blowfish" />
+	</secure-properties:config>
+	<munit:test name="implementation.raml-test-suite-implementation.ramlFlowTest" description="Test" doc:id="7eea1214-123b-4e00-8c7d-e30437cd2955" >
+		<munit:execution >
+			<http:request method="GET" doc:name="Request" doc:id="ca980391-c128-4a10-b008-befb84ceeb3a" config-ref="HTTP_Request_configuration" url="http://www.groundedtouchmassage.com/uploads/2/1/0/7/21073952/3552506_orig.jpg"/>
+			<set-payload value='#[output multipart/form-data
+boundary="3453563653"
+---
+{
+  parts : {
+    apikey : {
+      headers : {
+        "Content-Type": "text/plain"
+      },
+      content : "${secure::ocr_service.apikey}"
+    },
+    language : {
+      headers : {
+        "Content-Type": "text/plain"
+      },
+      content : "eng"
+    },
+    isOverlayRequired : {
+      headers : {
+        "Content-Type": "text/plain"
+      },
+      content : "false"
+    },
+    filetype : {
+      headers : {
+        "Content-Type": "text/plain"
+      },
+      content : "JPG"
+    },
+    file : {
+      headers : {
+        "Content-Disposition" : {
+            "filename": "form.jpg"
+        },
+        "Content-Type" : "image/jpeg"
+      },
+      content : payload
+    }
+  }
+}]' doc:name="Set Payload" doc:id="8713f6ec-9003-4073-b245-03a21dc9a366" />
+			<flow-ref doc:name="Flow-ref to implementation.ramlFlow" doc:id="b3f4d74a-da09-499e-a262-15e65be34565" name="implementation.ramlFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<logger level="INFO" doc:name="Logger" doc:id="a1c3f1d5-2f2e-4b6e-8ea1-c04118a03c9e" message="#[payload]"/>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="a0fb811b-1d5c-4bc2-b0ac-2a386905bd33" expression="#[sizeOf(payload.text)]" message="No payload found" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+
+</mule>

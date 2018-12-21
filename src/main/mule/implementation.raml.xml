@@ -6,7 +6,7 @@
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<flow name="implementation.ramlFlow" doc:id="f3da5cc3-1115-4537-b9d4-e9d1b9701eee" >
-		<http:request method="POST" doc:name="Request" doc:id="1bcb16e5-068a-437c-ba75-f0a8b36738f5" config-ref="HTTP_Request_configuration" path="${http_request.path}" outputMimeType='application/json' sendBodyMode="AUTO" requestStreamingMode="NEVER">
+		<http:request method="POST" doc:name="Request" doc:id="1bcb16e5-068a-437c-ba75-f0a8b36738f5" config-ref="HTTP_Request_configuration" path="${secure::http_request.path}" outputMimeType='application/json' sendBodyMode="AUTO" requestStreamingMode="NEVER">
 			<http:headers ><![CDATA[#[output application/java
 ---
 {

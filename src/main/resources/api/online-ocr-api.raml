@@ -26,7 +26,11 @@ types:
             description: The file to translate to text 
             required: true 
             type: file 
-            fileTypes: [ 'image/jpeg']       
+            fileTypes: [ 'image/jpeg']   
+          language:
+            description: The language of the image text
+            required: true
+            enum: [ 'eng' ]  
     responses: 
       200:
         body: 

@@ -3,7 +3,7 @@
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
     <apikit:config name="online-ocr-api-config" raml="online-ocr-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="online-ocr-api-main">
-        <http:listener config-ref="online-ocr-api-httpListenerConfig" path="${http_listener.path}">
+        <http:listener config-ref="online-ocr-api-httpListenerConfig" path="${secure::http_listener.path}">
             <http:response statusCode="#[vars.httpStatus default 200]">
             </http:response>
             <http:error-response statusCode="#[vars.httpStatus default 500]">
@@ -132,25 +132,19 @@ boundary="3453563653"
       headers : {
         "Content-Type": "text/plain"
       },
-      content : "${ocr_service.apikey}"
+      content : "${secure::ocr_service.apikey}"
     },
     language : {
       headers : {
         "Content-Type": "text/plain"
       },
-      content : "${ocr_service.language}"
+      content : payload.parts.language.content as String
     },
     isOverlayRequired : {
       headers : {
         "Content-Type": "text/plain"
       },
       content : "false"
-    },
-    filetype : {
-      headers : {
-        "Content-Type": "text/plain"
-      },
-      content : "${ocr_service.filetype}"
     },
     file : {
       headers : {
