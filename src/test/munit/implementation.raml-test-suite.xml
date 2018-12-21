@@ -40,12 +40,6 @@ boundary="3453563653"
       },
       content : "false"
     },
-    filetype : {
-      headers : {
-        "Content-Type": "text/plain"
-      },
-      content : "JPG"
-    },
     file : {
       headers : {
         "Content-Disposition" : {
