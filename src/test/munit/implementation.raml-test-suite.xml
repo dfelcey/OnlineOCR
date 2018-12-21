@@ -49,6 +49,7 @@ boundary="3453563653"
       },
       content : payload
     }
+    
   }
 }]' doc:name="Set Payload" doc:id="8713f6ec-9003-4073-b245-03a21dc9a366" />
 			<flow-ref doc:name="Flow-ref to implementation.ramlFlow" doc:id="b3f4d74a-da09-499e-a262-15e65be34565" name="implementation.ramlFlow"/>
