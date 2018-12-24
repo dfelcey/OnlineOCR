@@ -26,15 +26,18 @@ output application/json
                 </ee:transform>
             </on-error-propagate>
             <on-error-propagate type="APIKIT:NOT_FOUND">
-                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="00390fe0-0df1-4a33-bbd1-f079eb8ae8ac">
                     <ee:message>
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-{message: "Resource not found"}]]></ee:set-payload>
+{
+	message: "Resource not found",
+	payload: payload as String
+}]]></ee:set-payload>
                     </ee:message>
                     <ee:variables>
-                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[404]]></ee:set-variable>
                     </ee:variables>
                 </ee:transform>
             </on-error-propagate>
@@ -161,5 +164,10 @@ boundary="3453563653"
 		</ee:transform>
 		<flow-ref doc:name="implementation.ramlFlow" doc:id="0628c1d3-d0f8-4709-8a2b-3d786c3aaf27" name="implementation.ramlFlow"/>
 		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="6d93a215-84e9-43bd-9540-83be6ec48251" />
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="c25200f5-b4e7-48a2-b9a9-756f522494a4" >
+				<logger level="INFO" doc:name="Logger" doc:id="7c5a58f3-8d8c-47cb-b201-4af51bfe78c4" message="Error: #[error.description], Payload: #[payload]" />
+			</on-error-propagate>
+		</error-handler>
     </flow>
 </mule>

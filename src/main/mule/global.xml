@@ -19,7 +19,7 @@ http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/sc
 			port="${secure::http_request.port}">
 		</http:request-connection>
 	</http:request-config>
-	<api-gateway:autodiscovery apiId="15598609"
+	<api-gateway:autodiscovery apiId="15601747"
 		doc:name="API Autodiscovery" doc:id="49655158-a09e-43de-a0ea-a3c8a79818db"
 		flowRef="online-ocr-api-main" />
 	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="3b6a6fd6-e3e4-473f-81d1-7975e129d931" file="config.yaml" key="${config.key}" >

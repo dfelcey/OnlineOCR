@@ -23,5 +23,9 @@ output application/json
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="000ba51b-9d93-4509-b132-c29851654c42" >
+				<logger level="INFO" message="Error: #[error.description], Payload: #[payload]" />			</on-error-propagate>
+		</error-handler>
 	</flow>
 </mule>
