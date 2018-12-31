@@ -128,6 +128,15 @@ output application/json
 				<ee:set-payload><![CDATA[%dw 2.0
 output multipart/form-data
 boundary="3453563653"
+
+import * from dw::Runtime
+
+// Translate ISO language code for online OCR provider
+fun lookupLang(code) = 
+  if (code == "en")
+  	"eng"
+  else
+  	fail("Language code: " ++ code ++ " is not supported")
 ---
 {
   parts : {
@@ -141,7 +150,7 @@ boundary="3453563653"
       headers : {
         "Content-Type": "text/plain"
       },
-      content : payload.parts.language.content as String
+      content : lookupLang(payload.parts.language.content as String)
     },
     isOverlayRequired : {
       headers : {
