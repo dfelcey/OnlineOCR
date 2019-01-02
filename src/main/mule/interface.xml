@@ -152,16 +152,10 @@ fun lookupLang(code) =
       },
       content : lookupLang(payload.parts.language.content as String)
     },
-    isOverlayRequired : {
-      headers : {
-        "Content-Type": "text/plain"
-      },
-      content : "false"
-    },
     file : {
-      headers : {
+	  headers : {
         "Content-Disposition" : {
-            "filename": payload.parts.file1.headers.'Content-Disposition'.filename as String
+          "filename": payload.parts.file1.headers.'Content-Disposition'.filename as String
         },
         "Content-Type" : payload.parts.file1.headers.'Content-Type' as String
       },
