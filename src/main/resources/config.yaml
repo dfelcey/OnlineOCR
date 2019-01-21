@@ -3,9 +3,11 @@ http_listener:
   host: "![4hUzB55NXH0=]"
   base_path: "![Vxf6VG2CgMI=]"
   path: "![WfC8Ikf4l5U=]"
+  protocol: "![YrXeZI0vhSo=]"
 http_request:
-  port: "![lQchelXWi0A=]"
+  port: "![vzok6xiN0Qs=]"
   host: "![YakZzZ6XWGJGNs8uAfvzKg==]"
   path: "![OJjGQT3mT/iNEEar8oeziA==]"
+  protocol: "![QwBgZOFdEzI=]"
 ocr_service:
   apikey: "![/sOnLUvPoM78yEOwX98jSw==]"
