@@ -155,7 +155,7 @@ fun lookupLang(code) =
     file : {
 	  headers : {
         "Content-Disposition" : {
-          "filename": payload.parts.file1.headers.'Content-Disposition'.filename as String
+          "filename": payload.parts.filename.content as String
         },
         "Content-Type" : payload.parts.file1.headers.'Content-Type' as String
       },

@@ -22,11 +22,6 @@ types:
     body:
       multipart/form-data:
         properties: 
-          file1: 
-            description: The file to translate to text 
-            required: true 
-            type: file 
-            fileTypes: [ 'image/jpeg']   
           language:
             description: The language code for the file - ISO 639-1 Language Codes
             required: true
@@ -35,10 +30,15 @@ types:
             description: The type of the file
             required: true
             type: string
-          fileName:
+          filename:
             description: The name of the file
             required: true
             type: string
+          file1: 
+            description: The file to translate to text 
+            required: true 
+            type: file 
+            fileTypes: [ 'image/jpeg']   
     responses: 
       200:
         body: 
