@@ -14,9 +14,12 @@ http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/sc
 			port="${secure::http_listener.port}" />
 	</http:listener-config>
 	<http:request-config name="HTTP_Request_configuration"
-		doc:name="HTTP Request configuration" doc:id="860640c4-c721-45d9-9c70-d70b5b5251ba">
+		doc:name="HTTP Request configuration" doc:id="860640c4-c721-45d9-9c70-d70b5b5251ba" responseTimeout="20000">
 		<http:request-connection host="${secure::http_request.host}"
 			port="${secure::http_request.port}" protocol="HTTPS">
+			<reconnection >
+				<reconnect />
+			</reconnection>
 		</http:request-connection>
 	</http:request-config>
 	<api-gateway:autodiscovery apiId="15601747"
