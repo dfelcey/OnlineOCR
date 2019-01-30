@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
-	xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:java="http://www.mulesoft.org/schema/mule/java" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
-http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-	<flow name="implementation.ramlFlow" doc:id="f3da5cc3-1115-4537-b9d4-e9d1b9701eee" >
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/java http://www.mulesoft.org/schema/mule/java/current/mule-java.xsd">
+	<flow name="implementationFlow" doc:id="f3da5cc3-1115-4537-b9d4-e9d1b9701eee" >
 		<http:request method="POST" doc:name="Request" doc:id="1bcb16e5-068a-437c-ba75-f0a8b36738f5" config-ref="HTTP_Request_configuration" path="${secure::http_request.path}" outputMimeType='application/json' sendBodyMode="AUTO" requestStreamingMode="NEVER" responseTimeout="60000">
 			<reconnect />
 			<http:headers ><![CDATA[#[output application/java
@@ -14,6 +15,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 	"Content-type" : "multipart/form-data; boundary=3453563653"
 }]]]></http:headers>
 		</http:request>
+		<logger level="INFO" doc:name="Logger" doc:id="28fd4fd1-fead-4383-8245-2d40c2082840" message="Result: #[payload]"/>
 		<ee:transform doc:name="Transform Response  Message" doc:id="377f0f4f-dc05-4957-9602-268ed22fbaec" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0

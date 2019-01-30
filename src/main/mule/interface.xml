@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
-http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+<mule xmlns:java="http://www.mulesoft.org/schema/mule/java" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/java http://www.mulesoft.org/schema/mule/java/current/mule-java.xsd">
     <apikit:config name="online-ocr-api-config" raml="online-ocr-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="online-ocr-api-main">
         <http:listener config-ref="online-ocr-api-httpListenerConfig" path="${secure::http_listener.path}">
@@ -123,6 +124,17 @@ output application/json
         </error-handler>
     </flow>
     <flow name="post:\translate:multipart\form-data:online-ocr-api-config">
+		<set-variable value="#[payload.parts.contentTransferEncoding.content]" doc:name="Set Variable" doc:id="293a6a9a-fecc-489f-ba90-3f632e4abfa0" variableName="encodingType"/>
+		<choice doc:name="Choice" doc:id="07e83893-4d3a-415a-b710-f77cc146ab8f" >
+			<when expression="#[vars.encodingType == 'binary']">
+				<logger level="INFO" doc:name="Logger" doc:id="cd082fa4-dd7a-44f6-8661-92d949a64987" message="File contents not encoded" />
+			</when>
+			<otherwise >
+				<java:invoke-static doc:name="Invoke static" doc:id="9506a348-0fc8-451e-aa8e-726b9c3d8b01" class="onlineocr.Utils" method="Base64Decode" target="payload.parts.file1.content">
+					<java:args><![CDATA[#[payload.parts.file1.content]]]></java:args>
+				</java:invoke-static>
+			</otherwise>
+		</choice>
 		<ee:transform doc:name="Transform Message" doc:id="a83ea52c-29c4-405f-8fff-0427f9b4688f">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
@@ -157,19 +169,20 @@ fun lookupLang(code) =
         "Content-Disposition" : {
           "filename": payload.parts.filename.content as String
         },
-        "Content-Type" : payload.parts.file1.headers.'Content-Type' as String
+        "Content-Type": payload.parts.file1.headers.'Content-Type' as String
       },
-      content : payload.parts.file1.content
+      content: payload.parts.file1.content
     }
   }
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<flow-ref doc:name="implementation.ramlFlow" doc:id="0628c1d3-d0f8-4709-8a2b-3d786c3aaf27" name="implementation.ramlFlow"/>
+		<logger level="INFO" doc:name="Logger" doc:id="3a908dd0-d74b-49cb-b071-7998f607be6a" message="Request:  #[payload.parts.filename.content]"/>
+		<flow-ref doc:name="implementation.ramlFlow" doc:id="0628c1d3-d0f8-4709-8a2b-3d786c3aaf27" name="implementationFlow"/>
 		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="6d93a215-84e9-43bd-9540-83be6ec48251" />
 		<error-handler >
 			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="c25200f5-b4e7-48a2-b9a9-756f522494a4" >
-				<logger level="INFO" doc:name="Logger" doc:id="7c5a58f3-8d8c-47cb-b201-4af51bfe78c4" message="Error: #[error.description], Payload: #[payload]" />
+				<logger level="ERROR" doc:name="Logger" doc:id="7c5a58f3-8d8c-47cb-b201-4af51bfe78c4" message="Error: #[error.description]" />
 			</on-error-propagate>
 		</error-handler>
     </flow>

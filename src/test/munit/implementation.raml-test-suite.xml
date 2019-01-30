@@ -52,7 +52,7 @@ boundary="3453563653"
     
   }
 }]' doc:name="Set Payload" doc:id="8713f6ec-9003-4073-b245-03a21dc9a366" />
-			<flow-ref doc:name="Flow-ref to implementation.ramlFlow" doc:id="b3f4d74a-da09-499e-a262-15e65be34565" name="implementation.ramlFlow"/>
+			<flow-ref doc:name="Flow-ref to implementation.ramlFlow" doc:id="b3f4d74a-da09-499e-a262-15e65be34565" name="implementationFlow"/>
 		</munit:execution>
 		<munit:validation >
 			<logger level="INFO" doc:name="Logger" doc:id="a1c3f1d5-2f2e-4b6e-8ea1-c04118a03c9e" message="#[payload]"/>
