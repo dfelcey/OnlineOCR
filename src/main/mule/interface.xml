@@ -124,17 +124,8 @@ output application/json
         </error-handler>
     </flow>
     <flow name="post:\translate:multipart\form-data:online-ocr-api-config">
-		<set-variable value="#[payload.parts.contentTransferEncoding.content]" doc:name="Set Variable" doc:id="293a6a9a-fecc-489f-ba90-3f632e4abfa0" variableName="encodingType"/>
-		<choice doc:name="Choice" doc:id="07e83893-4d3a-415a-b710-f77cc146ab8f" >
-			<when expression="#[vars.encodingType == 'binary']">
-				<logger level="INFO" doc:name="Logger" doc:id="cd082fa4-dd7a-44f6-8661-92d949a64987" message="File contents not encoded" />
-			</when>
-			<otherwise >
-				<java:invoke-static doc:name="Invoke static" doc:id="9506a348-0fc8-451e-aa8e-726b9c3d8b01" class="onlineocr.Utils" method="Base64Decode" target="payload.parts.file1.content">
-					<java:args><![CDATA[#[payload.parts.file1.content]]]></java:args>
-				</java:invoke-static>
-			</otherwise>
-		</choice>
+		<set-variable value="#[payload.parts.contentTransferEncoding.content]" doc:name="Save Encoding" doc:id="293a6a9a-fecc-489f-ba90-3f632e4abfa0" variableName="encodingType"/>
+		<logger level="INFO" doc:name="Logger" doc:id="3a908dd0-d74b-49cb-b071-7998f607be6a" message="Request:  #[payload.parts.filename.content]" />
 		<ee:transform doc:name="Transform Message" doc:id="a83ea52c-29c4-405f-8fff-0427f9b4688f">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
@@ -142,6 +133,7 @@ output multipart/form-data
 boundary="3453563653"
 
 import * from dw::Runtime
+import * from dw::core::Binaries
 
 // Translate ISO language code for online OCR provider
 fun lookupLang(code) = 
@@ -171,13 +163,16 @@ fun lookupLang(code) =
         },
         "Content-Type": payload.parts.file1.headers.'Content-Type' as String
       },
-      content: payload.parts.file1.content
+      content: 
+      	if(vars.encodingType == 'binary') 
+      		payload.parts.file1.content 
+      	else 
+      		fromBase64(payload.parts.file1.content)
     }
   }
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="Logger" doc:id="3a908dd0-d74b-49cb-b071-7998f607be6a" message="Request:  #[payload.parts.filename.content]"/>
 		<flow-ref doc:name="implementation.ramlFlow" doc:id="0628c1d3-d0f8-4709-8a2b-3d786c3aaf27" name="implementationFlow"/>
 		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="6d93a215-84e9-43bd-9540-83be6ec48251" />
 		<error-handler >

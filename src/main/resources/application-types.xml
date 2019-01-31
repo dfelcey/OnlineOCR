@@ -47,4 +47,5 @@ type ocr_response = {|
       </types:output-event>
     </types:processor-declaration>
   </types:enrichment>
+  <types:enrichment select="#a8b4636b-323a-48c8-8e9a-5a263d483fa0"/>
 </types:mule>
