@@ -14,7 +14,7 @@ http://www.mulesoft.org/schema/mule/java http://www.mulesoft.org/schema/mule/jav
         <apikit:router config-ref="online-ocr-api-config" />
         <error-handler>
             <on-error-propagate type="APIKIT:BAD_REQUEST">
-                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="515191fc-04f5-4ee4-8f4e-f337fb302b93">
                     <ee:message>
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -22,7 +22,7 @@ output application/json
 {message: "Bad request"}]]></ee:set-payload>
                     </ee:message>
                     <ee:variables>
-                        <ee:set-variable variableName="httpStatus">400</ee:set-variable>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[400]]></ee:set-variable>
                     </ee:variables>
                 </ee:transform>
             </on-error-propagate>
@@ -34,7 +34,7 @@ output application/json
 ---
 {
 	message: "Resource not found",
-	payload: payload as String
+	error: error.description
 }]]></ee:set-payload>
                     </ee:message>
                     <ee:variables>
@@ -125,7 +125,22 @@ output application/json
     </flow>
     <flow name="post:\translate:multipart\form-data:online-ocr-api-config">
 		<set-variable value="#[payload.parts.contentTransferEncoding.content]" doc:name="Save Encoding" doc:id="293a6a9a-fecc-489f-ba90-3f632e4abfa0" variableName="encodingType"/>
-		<logger level="INFO" doc:name="Logger" doc:id="3a908dd0-d74b-49cb-b071-7998f607be6a" message="Request:  #[payload.parts.filename.content]" />
+		<logger level="INFO" doc:name="Logger" doc:id="3a908dd0-d74b-49cb-b071-7998f607be6a" message="File contents binary:  #[vars.encodingType == 'binary']" />
+		<ee:transform doc:name="Transform Image" doc:id="003b06d6-3822-4b39-8b2a-99231ede7876" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="binImage" ><![CDATA[%dw 2.0
+output application/octet-stream
+
+import * from dw::core::Binaries
+---
+if(vars.encodingType == 'binary') 
+	payload.parts.file1.content
+else 
+	fromBase64(payload.parts.file1.content)]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
 		<ee:transform doc:name="Transform Message" doc:id="a83ea52c-29c4-405f-8fff-0427f9b4688f">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
@@ -133,7 +148,6 @@ output multipart/form-data
 boundary="3453563653"
 
 import * from dw::Runtime
-import * from dw::core::Binaries
 
 // Translate ISO language code for online OCR provider
 fun lookupLang(code) = 
@@ -161,13 +175,9 @@ fun lookupLang(code) =
         "Content-Disposition" : {
           "filename": payload.parts.filename.content as String
         },
-        "Content-Type": payload.parts.file1.headers.'Content-Type' as String
+        "Content-Type": payload.parts.contentType.content as String
       },
-      content: 
-      	if(vars.encodingType == 'binary') 
-      		payload.parts.file1.content 
-      	else 
-      		fromBase64(payload.parts.file1.content)
+      content: vars.binImage as Binary
     }
   }
 }]]></ee:set-payload>

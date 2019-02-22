@@ -8,7 +8,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 http://www.mulesoft.org/schema/mule/java http://www.mulesoft.org/schema/mule/java/current/mule-java.xsd">
 	<flow name="implementationFlow" doc:id="f3da5cc3-1115-4537-b9d4-e9d1b9701eee" >
 		<until-successful maxRetries="5" doc:name="Until Successful" doc:id="d3288d8c-24d9-4105-ada4-bce4584dfff5" >
-			<http:request method="POST" doc:name="Request" doc:id="1bcb16e5-068a-437c-ba75-f0a8b36738f5" config-ref="HTTP_Request_configuration" path="${secure::http_request.path}" outputMimeType="application/json" sendBodyMode="AUTO" requestStreamingMode="NEVER" responseTimeout="60000">
+			<http:request method="POST" doc:name="Request" doc:id="1bcb16e5-068a-437c-ba75-f0a8b36738f5" config-ref="HTTP_Request_configuration" path="${secure::http_request.path}" sendBodyMode="AUTO" requestStreamingMode="NEVER" responseTimeout="60000">
 			<reconnect />
 			<http:headers><![CDATA[#[output application/java
 ---
@@ -28,9 +28,5 @@ output application/json
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<error-handler >
-			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="000ba51b-9d93-4509-b132-c29851654c42" >
-				<logger level="INFO" message="Error: #[error.description], Payload: #[payload]" />			</on-error-propagate>
-		</error-handler>
 	</flow>
 </mule>
