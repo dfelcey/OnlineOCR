@@ -184,7 +184,6 @@ fun lookupLang(code) =
 			</ee:message>
 		</ee:transform>
 		<flow-ref doc:name="implementation.ramlFlow" doc:id="0628c1d3-d0f8-4709-8a2b-3d786c3aaf27" name="implementationFlow"/>
-		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="6d93a215-84e9-43bd-9540-83be6ec48251" />
 		<error-handler >
 			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="c25200f5-b4e7-48a2-b9a9-756f522494a4" >
 				<logger level="ERROR" doc:name="Logger" doc:id="7c5a58f3-8d8c-47cb-b201-4af51bfe78c4" message="Error: #[error.description]" />

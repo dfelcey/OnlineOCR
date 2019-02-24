@@ -28,4 +28,5 @@ http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/sc
 	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="3b6a6fd6-e3e4-473f-81d1-7975e129d931" file="config.yaml" key="${config.key}" >
 		<secure-properties:encrypt algorithm="Blowfish" />
 	</secure-properties:config>
+	<global-property doc:name="Global Property" doc:id="3a5e7c5e-47e7-4442-98cf-908d1a954bf4" name="defaultResponseTimeout" value="30000" />
 	</mule>
