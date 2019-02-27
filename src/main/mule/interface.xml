@@ -164,6 +164,18 @@ fun lookupLang(code) =
       },
       content : "${secure::ocr_service.apikey}"
     },
+    detectOrientation : {
+      headers : {
+        "Content-Type": "text/plain"
+      },
+      content : "true"
+    },
+    scale : {
+      headers : {
+        "Content-Type": "text/plain"
+      },
+      content : "true"
+    },
     language : {
       headers : {
         "Content-Type": "text/plain"
